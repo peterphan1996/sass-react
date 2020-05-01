@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.scss";
+import TodoList from "./components/TodoList/TodoList";
 
 function App() {
+  const [todos, setTodos] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const addTodoItem = () => {
+    if (inputValue) {
+      setTodos([...todos, inputValue]);
+    }
+  };
+  const onChange = (e) => {
+    setInputValue(e.target.value);
+  };
+  const removeItem = (item) => {
+    const filterTodos = todos.filter(function (value, index, arr) {
+      return value !== item;
+    });
+    setTodos(filterTodos);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input
+        label="Add todo item"
+        value={inputValue}
+        onChange={onChange}
+      ></input>
+      <button className="btn" onClick={addTodoItem}>
+        Add
+      </button>
+      <TodoList todos={todos} removeItem={removeItem} />
     </div>
   );
 }
